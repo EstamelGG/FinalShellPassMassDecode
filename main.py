@@ -91,26 +91,28 @@ def getUserAndPass(file_path):
         try:
             password = json_data.get('password')
             username = json_data.get('user_name')
+            host = json_data.get('host')
         except:
+            host = False
             password = False
             username = False
-    return username, password
+    return host, username, password
 
 def decode_json_files(src_path):
     src_path = str(src_path)
     print("Decode from path : %s" % src_path)
     if os.path.isfile(src_path) and src_path.endswith(".json"):
-        username, password = getUserAndPass(src_path)
+        host, username, password = getUserAndPass(src_path)
         if username and password:
-            print("[+] %s: %s" % (username, decode_pass(password)))
+            print("[+] %s:%s:%s" % (host, username, decode_pass(password)))
     elif os.path.isdir(src_path):
         for filename in os.listdir(src_path):
             if filename.endswith('.json'):
                 # print("JSON File:", filename)
                 file_path = os.path.join(src_path, filename)
-                username, password = getUserAndPass(file_path)
+                host, username, password = getUserAndPass(file_path)
                 if username and password:
-                    print("[+] %s:%s" % (username, decode_pass(password)))
+                    print("[+] %s:%s:%s" % (host, username, decode_pass(password)))
 
 
 parser = argparse.ArgumentParser(description='Final Shell Decode')
